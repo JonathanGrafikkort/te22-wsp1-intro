@@ -1,11 +1,13 @@
 import express from 'express'
 import nunjucks from 'nunjucks'
 import morgan from 'morgan'
+import indexRouter from './routes/index.js'
 
 const app = express()
 
 app.use(express.static("public"))
 app.use(morgan("dev"))
+app.use('/', indexRouter)
 
 nunjucks.configure("views", {
    autoescape: true,
@@ -43,6 +45,10 @@ app.get('/watch', (req, res) => {
         movie: (movies[name])
     })
       
+})
+
+app.use((req, res) => {
+    res.status(404).send("not found")
 })
 
 app.listen(3000, ()=> {
