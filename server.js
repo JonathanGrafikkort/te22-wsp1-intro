@@ -1,27 +1,48 @@
 import express from 'express'
 import nunjucks from 'nunjucks'
+import morgan from 'morgan'
+
 const app = express()
 
 app.use(express.static("public"))
+app.use(morgan("dev"))
 
 nunjucks.configure("views", {
    autoescape: true,
    express: app
 })
 
-app.get('/', (req, response) =>{
-    response.render("index.njk", {
+app.get('/', (req, res) =>{
+    console.log(req.query)
+    const name = req.query.name
+    res.render("index.njk", {
         message: "fag",
         title: "Nunjucks fag",
     })    
 })
 
-app.get('/om', (req, response) =>{
-    response.render("index.njk", {
+app.get('/om', (req, res) =>{
+    res.render("index.njk", {
         message: "the burger man the burger man hoo haa",
         title: "Nunjucks"
     })
     
+})
+
+app.get('/watch', (req, res) => {
+    console.log(req.query)
+    const name = req.query.name
+
+    const movies = {
+        "test": {
+            title:"efd",           
+        }
+    }
+    
+    res.render('watch.njk', {
+        movie: (movies[name])
+    })
+      
 })
 
 app.listen(3000, ()=> {
